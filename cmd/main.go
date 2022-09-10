@@ -10,10 +10,25 @@ import (
 	"github.com/claudemuller/fishwife/internal/pkg"
 )
 
-var mode = flag.Bool("serve", true, "run in server mode")
+var (
+	genQr = flag.Bool("genQr", false, "generate a QR code")
+	url   = flag.String("url", "", "the url to generate into a QR code")
+)
 
 func main() {
 	log.SetPrefix("__fishwife: ")
+	flag.Parse()
+
+	if *genQr {
+		if *url == "" {
+			log.Println("url flag is required when generating QR codes")
+			flag.Usage()
+			return
+		}
+
+		pkg.GenQrCode(*url)
+		return
+	}
 
 	app := pkg.NewAppState()
 	defer app.DB.Close()
@@ -25,5 +40,5 @@ func main() {
 	}
 
 	log.Println("starting server")
-	log.Fatal(http.ListenAndServe("localhost:"+port, router))
+	log.Fatal(http.ListenAndServe(":"+port, router))
 }

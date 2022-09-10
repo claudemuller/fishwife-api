@@ -2,6 +2,7 @@ package routes
 
 import (
 	"encoding/json"
+	"log"
 	"net/http"
 
 	"github.com/claudemuller/fishwife/internal/pkg"
@@ -17,7 +18,7 @@ type Reminder struct {
 	DeletedAt   interface{} `json:"deleted_at"`
 }
 
-func GetReminders(w http.ResponseWriter, _ *http.Request, app pkg.AppState) {
+func GetReminders(w http.ResponseWriter, req *http.Request, app pkg.AppState) {
 	//rows, err := app.DB.Query("SELECT * from sales")
 	//if err != nil {
 	//	log.Fatal("db query error: %w", err)
@@ -38,10 +39,13 @@ func GetReminders(w http.ResponseWriter, _ *http.Request, app pkg.AppState) {
 	//	log.Fatal("db query error: %w", err)
 	//}
 
-	reminder := Reminder{
-		ID:          1,
-		User:        "claude",
-		Description: "test reminder",
+	reminder := []Reminder{
+		{
+			ID:          1,
+			User:        "claude",
+			Description: "test reminder",
+			CreatedAt:   "2002",
+		},
 	}
 
 	res := pkg.Response{
@@ -55,6 +59,7 @@ func GetReminders(w http.ResponseWriter, _ *http.Request, app pkg.AppState) {
 		return
 	}
 
+	log.Printf("replying to %s on endpoint %s\n", req.RemoteAddr, req.URL.Path)
 	w.Header().Add("Content-Type", "application/json")
 	w.Write(resJSON)
 }
