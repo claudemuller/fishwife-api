@@ -1,5 +1,5 @@
 <p align="center">
-    <img src="./logo.png" alt="Fishwife" style="max-width: 50%" />
+    <img src="./logo.png" alt="Fishwife" width="400px" />
 </p>
 
 # Fishwife API
